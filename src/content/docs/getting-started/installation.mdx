@@ -1,0 +1,156 @@
+---
+title: Installation
+---
+
+import { Code, Tabs, TabItem } from "@astrojs/starlight/components";
+import ExternalLink from "../../../components/ExternalLink.astro";
+
+## Requirements
+
+<ul>
+  <li>{"Node.js v16.13+"}</li>
+  <li>{"An active Shopify store"}</li>
+  <li>
+    {"A Sanity account (you can create an account "}
+    <ExternalLink url="https://www.sanity.io/login/sign-up">
+      {"here"}
+    </ExternalLink>
+    {")"}
+  </li>
+</ul>
+
+<p>
+  {
+    "In addition to these requirements, we recommend understanding the basics of "
+  }
+  <ExternalLink url="https://react.dev/">{"React"}</ExternalLink>
+  {" and "}
+  <ExternalLink url="https://remix.run/">{"Remix"}</ExternalLink>
+  {" to get the most out of Hydrogen."}
+</p>
+
+## Step 1: Create a new Fluid project
+
+Clone the Fluid repository using the following command in your terminal:
+
+<Code lang="sh" code={"npx create-remix@latest --template frontvibe/fluid"} />
+
+Move into the project directory `cd FOLDER_NAME` and create a new Sanity project running the following command:
+
+<Code lang="sh" code={"npx sanity@latest init --env"} />
+
+This command will generate a `.env` file in your project directory with your Sanity
+project ID and dataset.
+
+## Step 2: Install the Hydrogen or Headless channel
+
+To use Fluid, you'll need to install the Hydrogen or Headless channel.
+These Shopify channels will generate access tokens to connect Fluid to your store.
+
+The Hydrogen channel is available for all Shopify plans (Basic, Shopify, Advanced, or Plus plan).
+Development stores aren't supported at this time, but you can install the Headless channel if you want to try Fluid.
+
+<Tabs>
+  <TabItem label="Hydrogen channel">
+    {`The Hydrogen channel is required if you plan to deploy at no cost on Oxygen, Shopify's global hosting solution. Once you install the `}
+    <ExternalLink url="https://apps.shopify.com/hydrogen">
+      {"Hydrogen channel"}
+    </ExternalLink>
+    {` you'll need to create a new storefront. We invite you to follow the official `}
+    <ExternalLink url="https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started#step-3-install-the-hydrogen-channel">
+      {"Shopify's instructions"}
+    </ExternalLink>
+    {" to get started."}
+  </TabItem>
+  <TabItem label="Headless channel">
+    {`The headless channel can be used if you want to use an alternative hosting solution such as Vercel. It'll give you the same experience as the Hydrogen channel. You can install the `}
+    <ExternalLink url="https://apps.shopify.com/headless">
+      {"Headless channel"}
+    </ExternalLink>
+    {` and create a new storefront.`}
+  </TabItem>
+</Tabs>
+
+Once you've installed the channel, you'll need to update your `.env` file with your access tokens. You can safely deplicate the `.env.template` file and name it `.env`.
+
+![API tokens](../../../assets/api_tokens.png)
+
+The Public access token will be your `PUBLIC_STOREFRONT_API_TOKEN` and the Private access token will be your `PRIVATE_STOREFRONT_API_TOKEN`.
+
+You can also replace the `PUBLIC_STORE_DOMAIN` with your store's domain.
+
+The `SESSION_SECRET` variable will be used to sign cookies. You should create a unique secret and add it to your `.env` file.
+
+<p>
+  {"More info about signing cookies in Remix can be found "}
+  <ExternalLink url="https://remix.run/docs/en/main/utils/cookies#signing-cookies">
+    {"here"}
+  </ExternalLink>
+  {"."}
+</p>
+
+The `PUBLIC_STOREFRONT_ID` can be found in the Shopify url of your storefront. If you installed the Hydrogen channel it can be found at `https://admin.shopify.com/store/STORE_NAME/custom_storefronts/YOUR_ID`.\
+If you installed the Headless channel it can be found at `https://admin.shopify.com/store/STORE_NAME/headless_storefronts/YOUR_ID`.
+
+## Sanity setup
+
+<Code lang="sh" code={"npx sanity@latest init"} />
+
+- Create a Sanity Account
+- CORS and API credentials
+- Sanity Connect (Shopify App)
+
+## Environment variables
+
+Replace the following values in your `.env` file.
+
+<Code
+  lang="sh"
+  code={`
+NODE_ENV="development"
+# Shopify
+SESSION_SECRET="topSecret"
+PUBLIC_STORE_DOMAIN="headless-journey.myshopify.com"
+PUBLIC_STOREFRONT_API_TOKEN="2cb9e48134803a2f8331ed6bd6304ebb"
+PRIVATE_STOREFRONT_API_TOKEN="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+PUBLIC_STOREFRONT_ID="13526"
+PUBLIC_STOREFRONT_API_VERSION="2024-01"
+# Sanity
+SANITY_STUDIO_PROJECT_ID="r29ig4oy"
+SANITY_STUDIO_DATASET="production"
+SANITY_STUDIO_API_VERSION="2023-10-01"
+SANITY_STUDIO_PREVIEW_URL="https://preview-url.vercel.app"
+SANITY_STUDIO_URL="http://localhost:3333"
+SANITY_STUDIO_USE_STEGA="true"
+SANITY_STUDIO_SHOPIFY_SHOP_HANDLE="headless-journey"
+  `}
+/>
+
+## Countries and Internationalization
+
+Update the `countries/index.ts` file to add or update countries and languages.
+The default country will be used as a fallback when no country is found in the url.
+
+<Code
+  lang="ts"
+  code={`
+export const countries: Localizations = {
+  default: {
+    country: 'US',
+    currency: 'USD',
+    isoCode: 'en-us',
+    label: 'United States (USD $)',
+    language: 'EN',
+    languageLabel: 'English',
+  },
+  '/fr': {
+    country: 'FR',
+    currency: 'EUR',
+    isoCode: 'fr-fr',
+    label: 'France (EUR €)',
+    language: 'FR',
+    languageLabel: 'French',
+  }
+};
+`}
+/>
