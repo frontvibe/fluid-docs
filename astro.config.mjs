@@ -3,6 +3,7 @@ import starlight from "@astrojs/starlight";
 import react from "@astrojs/react";
 
 import tailwind from "@astrojs/tailwind";
+import { externalLink } from "./src/plugins/externalLink";
 
 // https://astro.build/config
 export default defineConfig({
@@ -98,4 +99,7 @@ export default defineConfig({
     react(),
     tailwind(),
   ],
+  markdown: {
+    rehypePlugins: [externalLink],
+  },
 });
