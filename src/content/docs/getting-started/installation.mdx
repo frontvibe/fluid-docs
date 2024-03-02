@@ -14,15 +14,22 @@ In addition to these requirements, we recommend understanding the basics of [Rea
 
 ## Step 1: Create a new Fluid project
 
-Clone the Fluid repository using the following command in your terminal:
+Clone the Fluid repository using the following commands in your terminal:
 
-<Code lang="sh" code={"npx create-remix@latest --template frontvibe/fluid"} />
+<Code
+  lang="sh"
+  code={`
+mkdir my-fluid-app
+cd my-fuild-app
 
-Move into the project directory `cd ./path-to-your-app` and create a new Sanity project running the following command:
+# Clone the Fluid repository\nnpx create-remix@latest . --template frontvibe/fluid
 
-<Code lang="sh" code={"npx sanity@latest init --env .env.sanity"} />
+# Create a new Sanity project\nnpx sanity@latest init --env .env.sanity
 
-This command will create a new Sanity project and generate a `.env.sanity` file in your project directory with your `SANITY_PROJECT_ID` and `SANITY_DATASET`.
+`}
+/>
+
+The `npx sanity@latest` command will create a new Sanity project and generate a `.env.sanity` file in your project directory with your `SANITY_PROJECT_ID` and `SANITY_DATASET`.
 You can use these variables in your `.env` file. More details about environment variables can be found [here](#step-5-environment-variables).
 
 ## Step 2: Install the Hydrogen or Headless channel
