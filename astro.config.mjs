@@ -30,6 +30,10 @@ export default defineConfig({
               label: "Installation",
               link: "/getting-started/installation",
             },
+            {
+              label: "Deployment",
+              link: "/getting-started/deployment/",
+            },
           ],
         },
         {
@@ -61,15 +65,11 @@ export default defineConfig({
             },
             {
               label: "Preview mode",
-              link: "/cms/preview-mode/",
+              link: "/cms/preview/",
             },
             {
               label: "Internationalization",
               link: "/cms/preview-mode/",
-            },
-            {
-              label: "Deployment",
-              link: "/cms/deployment/",
             },
           ],
         },

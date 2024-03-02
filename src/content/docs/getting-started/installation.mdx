@@ -8,7 +8,7 @@ import { Code, Tabs, TabItem } from "@astrojs/starlight/components";
 
 - Node.js v16.13+
 - An active Shopify store
-- A Sanity account (you can create an account [here](https://www.sanity.io/login/sign-up))
+- A Sanity account (you can create one [here](https://www.sanity.io/login/sign-up))
 
 In addition to these requirements, we recommend understanding the basics of [React](https://react.dev/) and [Remix](https://remix.run/) to get the most out of Hydrogen.
 
@@ -18,12 +18,12 @@ Clone the Fluid repository using the following command in your terminal:
 
 <Code lang="sh" code={"npx create-remix@latest --template frontvibe/fluid"} />
 
-Move into the project directory `cd FOLDER_NAME` and create a new Sanity project running the following command:
+Move into the project directory `cd ./path-to-your-app` and create a new Sanity project running the following command:
 
-<Code lang="sh" code={"npx sanity@latest init --env"} />
+<Code lang="sh" code={"npx sanity@latest init --env .env.sanity"} />
 
-This command will generate a `.env` file in your project directory with your Sanity
-project ID and dataset.
+This command will create a new Sanity project and generate a `.env.sanity` file in your project directory with your `SANITY_PROJECT_ID` and `SANITY_DATASET`.
+You can use these variables in your `.env` file. More details about environment variables can be found [here](#step-5-environment-variables).
 
 ## Step 2: Install the Hydrogen or Headless channel
 
@@ -31,22 +31,22 @@ To use Fluid, you'll need to install the Hydrogen or Headless channel.
 These Shopify channels will generate access tokens to connect Fluid to your store.
 
 The Hydrogen channel is available for all Shopify plans (Basic, Shopify, Advanced, or Plus plan).
-Development stores aren't supported at this time, but you can install the Headless channel if you want to try Fluid.
+Development stores aren't supported at this time, but you can install the Headless channel and it will work the same.
 
 <Tabs>
   <TabItem label="Hydrogen channel">
-    The Hydrogen channel is required if you plan to deploy at no cost on Oxygen,
-    Shopify's global hosting solution. Once you install the [Hydrogen
+    The Hydrogen channel is required if you plan to deploy your wesbite on
+    Oxygen (Shopify's global hosting solution). Once you install the [Hydrogen
     channel](https://apps.shopify.com/hydrogen) you'll need to create a new
     storefront. We invite you to follow the official [Shopify's
     instructions](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started#step-3-install-the-hydrogen-channel)
     to get started.
   </TabItem>
   <TabItem label="Headless channel">
-    The headless channel can be used if you want to use an alternative hosting
-    solution such as Vercel. It'll give you the same experience as the Hydrogen
-    channel. You can install the [Headless
-    channel](https://apps.shopify.com/headless) and create a new storefront.
+    The Headless channel is the right choice if you want to use an alternative
+    hosting solution such as Vercel. It'll give you the exact same experience as
+    the Hydrogen channel. You can install the [Headless channel
+    here](https://apps.shopify.com/headless) and create a new storefront.
   </TabItem>
 </Tabs>
 
@@ -58,24 +58,36 @@ The Public access token will be your `PUBLIC_STOREFRONT_API_TOKEN` and the Priva
 
 You can also replace the `PUBLIC_STORE_DOMAIN` with your store's domain.
 
-The `SESSION_SECRET` variable will be used to sign cookies. You should create a unique secret and add it to your `.env` file.
+## Step 3: Update Sanity CORS
 
-More info about signing cookies in Remix can be found [here](https://remix.run/docs/en/main/utils/cookies#signing-cookies).
+Go to your Sanity admin dashboard and add every hosts that we'll need to connect to the Sanity project API.
+We suggest to add `http://localhost:*` and any production domain that you want to use.
+Use can use the wildcard `*` to allow multiple domains. Please note that you'll also need to add your Sanity Studio production domain.
 
-The `PUBLIC_STOREFRONT_ID` can be found in the Shopify url of your storefront. If you installed the Hydrogen channel it can be found at `https://admin.shopify.com/store/STORE_NAME/custom_storefronts/YOUR_ID`.\
-If you installed the Headless channel it can be found at `https://admin.shopify.com/store/STORE_NAME/headless_storefronts/YOUR_ID`.
+![Sanity CORS](../../../assets/sanity_cors.png)
 
-## Sanity setup
+## Step 4: Install the Sanity Connect app
 
-<Code lang="sh" code={"npx sanity@latest init"} />
+To automaticcally synchronize your Shopify products and collections with your Sanity project, add the [Sanity Connect app](https://apps.shopify.com/sanity-connect) in your Shopify store.
+Select the Sanity project you created and the dataset.
 
-- Create a Sanity Account
-- CORS and API credentials
-- Sanity Connect (Shopify App)
+![Sanity connect app](../../../assets/sanity_connect.png)
 
-## Environment variables
+Leave the default settings and start synchronizing:
 
-Replace the following values in your `.env` file.
+![Sanity connect app sync](../../../assets/sanity_connect_sync.png)
+
+Now, each time you add or update a Shopify product or collection, your Sanity project will be automatically updated!
+
+Please note that the Sanity connect app won't automatically delete products or collections that are no longer in your Shopify store.
+If you you to completely delete a product or a collection from your Sanity project, you'll have to do it manually:
+
+![Sanity delete collection](../../../assets/sanity_delete_collection.png)
+
+## Step 5: Environment variables
+
+Fluid requires the following environment variables to function properly.
+Some will be used by the Hydrogen app to connect to your Shopify store, and some will be used by the Sanity Studio.
 
 <Code
   lang="sh"
@@ -92,17 +104,74 @@ PUBLIC_STOREFRONT_API_VERSION="2024-01"
 SANITY_STUDIO_PROJECT_ID="gbcm3da4"
 SANITY_STUDIO_DATASET="production"
 SANITY_STUDIO_API_VERSION="2023-03-20"
-SANITY_STUDIO_PREVIEW_URL="https://preview-url.vercel.app"
+SANITY_STUDIO_PRODUCTION_URL="https://your-hydrogen-app.vercel.app"
 SANITY_STUDIO_URL="http://localhost:3333"
-SANITY_STUDIO_USE_STEGA="true"
+SANITY_STUDIO_USE_PREVIEW_MODE="true"
 SANITY_STUDIO_SHOPIFY_SHOP_HANDLE="fluid-demo"
   `}
 />
 
-## Countries and Internationalization
+#### `SESSION_SECRET`
+
+The `SESSION_SECRET` variable will be used to sign cookies. You should create a unique secret and add it to your `.env` file.
+More info about signing cookies in Remix can be found [here](https://remix.run/docs/en/main/utils/cookies#signing-cookies).
+
+#### `PUBLIC_STORE_DOMAIN`
+
+The `PUBLIC_STORE_DOMAIN` variable will be used to connect to your Shopify store.
+
+#### `PUBLIC_STOREFRONT_API_TOKEN`
+
+The `PUBLIC_STOREFRONT_API_TOKEN` variable will be used to connect to your Shopify store.
+You can find it in your Hydrogen or Headless channel.
+
+#### `PRIVATE_STOREFRONT_API_TOKEN`
+
+The `PRIVATE_STOREFRONT_API_TOKEN` variable will be used to connect to your Shopify store.
+You can find it in your Hydrogen or Headless channel.
+
+#### `PUBLIC_STOREFRONT_ID`
+
+The `PUBLIC_STOREFRONT_ID` can be found in the Shopify url of your storefront. If you installed the Hydrogen channel it can be found at `https://admin.shopify.com/store/STORE_NAME/custom_storefronts/YOUR_ID`.\
+If you installed the Headless channel it can be found at `https://admin.shopify.com/store/STORE_NAME/headless_storefronts/YOUR_ID`.
+
+#### `SANITY_STUDIO_PROJECT_ID`
+
+The `SANITY_STUDIO_PROJECT_ID` variable will be used to connect to your Sanity project.
+You can find it in your Sanity project admin dashboard or in your `.env.sanity` file.
+
+#### `SANITY_STUDIO_DATASET`
+
+The `SANITY_STUDIO_DATASET` variable will be used to connect to your Sanity project.
+You can find it in your Sanity project admin dashboard or in your `.env.sanity` file.
+
+#### `SANITY_STUDIO_PRODUCTION_URL`
+
+Once your app is deployed in production, your Sanity Studio will need a live url to enable live updates in preview mode.
+During development, the preview url used is `http://localhost:3000`.
+
+#### `SANITY_STUDIO_URL`
+
+The `SANITY_STUDIO_URL` variable will be used by the Hydrogen app to enable overlays when using the preview mode.
+
+#### `SANITY_STUDIO_USE_PREVIEW_MODE`
+
+Used by the Hydrogen app to enable/disable Sanity Preview Mode.
+
+Your visitors won't see these encodings, but the Overlays will see them and overlay the editing UI on hover.
+
+More info about [Sanity Loaders and Overlays](https://www.sanity.io/docs/loaders-and-overlays).
+
+#### `SANITY_STUDIO_SHOPIFY_SHOP_HANDLE`
+
+Used by the Sanity Studio to build your products and collections url.
+Your Shopify handle is the begining of your Shopify domain url (`HANDLE.myshopify.com`).
+
+## Step 6: Countries and Internationalization
 
 Update the `countries/index.ts` file to add or update countries and languages.
 The default country will be used as a fallback when no country is found in the url.
+This file is shared across your Hydrogen app and Sanity studio.
 
 <Code
   lang="ts"
@@ -127,3 +196,55 @@ export const countries: Localizations = {
 };
 `}
 />
+
+## Step 7: Launch your app
+
+Before launching your app, you'll need to install the dependencies of your Hydrogen app and Sanity Studio:
+
+<Tabs>
+  <TabItem label="pnpm" icon="pnpm">
+    <Code
+      lang="sh"
+      code={`pnpm install && cd studio && pnpm install && cd ..`}
+    />
+  </TabItem>
+  <TabItem label="yarn" icon="seti:yarn">
+    <Code
+      lang="sh"
+      code={`yarn install && cd studio && yarn install && cd ..`}
+    />
+  </TabItem>
+  <TabItem label="npm" icon="seti:npm">
+    <Code lang="sh" code={`npm install && cd studio && npm install && cd ..`} />
+  </TabItem>
+</Tabs>
+
+To launch your app, run the following command in your terminal:
+
+<Tabs>
+  <TabItem label="pnpm" icon="pnpm">
+    <Code lang="sh" code={"pnpm run dev"} />
+  </TabItem>
+  <TabItem label="yarn" icon="seti:yarn">
+    <Code lang="sh" code={"yarn run dev"} />
+  </TabItem>
+  <TabItem label="npm" icon="seti:npm">
+    <Code lang="sh" code={"npm run dev"} />
+  </TabItem>
+</Tabs>
+
+This command will start both the Hydrogen app and the Sanity Studio in development mode.
+
+You can use the following commands if you need to launch each apps separately:
+
+<Tabs>
+  <TabItem label="pnpm" icon="pnpm">
+    <Code lang="sh" code={`pnpm run dev:app\npnpm run dev:studio`} />
+  </TabItem>
+  <TabItem label="yarn" icon="seti:yarn">
+    <Code lang="sh" code={`yarn run dev:app\nyarn run dev:studio`} />
+  </TabItem>
+  <TabItem label="npm" icon="seti:npm">
+    <Code lang="sh" code={`npm run dev:app\nnpm run dev:studio`} />
+  </TabItem>
+</Tabs>

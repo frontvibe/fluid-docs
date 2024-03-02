@@ -20,4 +20,8 @@
     background-color: var(--sl-color-text-accent);
     mask: url("/external-icon.svg") no-repeat left center;
   }
+
+  a[data-external]:hover::after {
+    background-color: var(--sl-color-white);
+  }
 }

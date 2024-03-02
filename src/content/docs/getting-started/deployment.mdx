@@ -1,0 +1,34 @@
+---
+title: Deployment
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+
+## Hydrogen app
+
+<Tabs>
+  <TabItem label="Oxygen">
+    If you have installed the Hydrogen channle and if you want to deploy your
+    app to Oxygen, read the official [Shopify
+    guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started#step-3-install-the-hydrogen-channel).
+  </TabItem>
+  <TabItem label="Vercel"></TabItem>
+</Tabs>
+
+## Sanity Studio
+
+Run the following command if you want to host your studio on Sanity:
+
+<Tabs>
+  <TabItem label="pnpm" icon="pnpm">
+    <Code lang="sh" code={`pnpm run sanity:deploy`} />
+  </TabItem>
+  <TabItem label="yarn" icon="seti:yarn">
+    <Code lang="sh" code={`yarn run sanity:deploy`} />
+  </TabItem>
+  <TabItem label="npm" icon="seti:npm">
+    <Code lang="sh" code={`npm run sanity:deploy`} />
+  </TabItem>
+</Tabs>
+
+More info about [deploying Sanity](https://www.sanity.io/docs/deployment).
