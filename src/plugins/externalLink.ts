@@ -44,5 +44,5 @@ const isAnchor = (element: Element) =>
   element.tagName == "a" && element.properties && "href" in element.properties;
 
 const isExternal = (url: string) => {
-  return url.startsWith("http");
+  return url.startsWith("http") && !url.includes("vercel.com/new/clone");
 };

@@ -5,15 +5,20 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import { externalLink } from "./src/plugins/externalLink";
 
+export const repoUrl = "https://github.com/frontvibe/fluid";
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
       title: "Fluid",
       social: {
-        github: "https://github.com/thomasKn",
+        github: repoUrl,
       },
       customCss: ["./src/tailwind.css"],
+      editLink: {
+        baseUrl: repoUrl + "/edit/main/",
+      },
       sidebar: [
         {
           label: "Getting started",
