@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  [data-has-hero] header {
+    @apply border-b-transparent backdrop-blur-lg supports-[backdrop-filter]:bg-[transparent];
+  }
+
+  [data-image-component="true"] {
+    @apply w-full;
+  }
+
   a[data-external] {
     position: relative;
     margin-right: 15px;

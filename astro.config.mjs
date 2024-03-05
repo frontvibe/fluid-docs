@@ -46,34 +46,30 @@ export default defineConfig({
           items: [
             {
               label: "Content structure",
-              link: "/cms/preview-mode/",
+              link: "/cms/content-structure/",
             },
             {
               label: "Using templates",
-              link: "/cms/preview-mode/",
+              link: "/cms/templates/",
             },
             {
               label: "Color schemes",
-              link: "/cms/preview-mode/",
+              link: "/cms/color-schemes/",
             },
             {
               label: "Typography",
-              link: "/cms/preview-mode/",
-            },
-            {
-              label: "Theme content",
-              link: "/cms/preview-mode/",
+              link: "/cms/typography/",
             },
             {
               label: "Settings",
-              link: "/cms/preview-mode/",
-            },
-            {
-              label: "Preview mode",
-              link: "/cms/preview/",
+              link: "/cms/settings/",
             },
             {
               label: "Internationalization",
+              link: "/cms/internationalization/",
+            },
+            {
+              label: "Preview mode",
               link: "/cms/preview-mode/",
             },
           ],
@@ -83,26 +79,28 @@ export default defineConfig({
           items: [
             {
               label: "Project structure",
-              link: "/theme/introduction",
+              link: "/theme/project-structure",
             },
             {
               label: "Sections",
-              link: "/theme/introduction",
+              link: "/theme/sections",
             },
             {
               label: "Components",
-              link: "/theme/why-fluid",
+              link: "/theme/components",
             },
             {
               label: "Groqd queries",
-              link: "/theme/installation",
+              link: "/theme/groqd",
             },
           ],
         },
       ],
     }),
     react(),
-    tailwind(),
+    tailwind({
+      nesting: true,
+    }),
   ],
   markdown: {
     rehypePlugins: [externalLink],
