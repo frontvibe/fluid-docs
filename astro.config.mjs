@@ -86,12 +86,12 @@ export default defineConfig({
               link: "/theme/sections",
             },
             {
-              label: "Components",
-              link: "/theme/components",
+              label: "CSS and Styling",
+              link: "/theme/css-styling",
             },
             {
-              label: "Groqd queries",
-              link: "/theme/groqd",
+              label: "Sanity queries",
+              link: "/theme/sanity-queries",
             },
           ],
         },

@@ -1,3 +1,115 @@
 ---
 title: Sections
 ---
+
+import { Steps, Code } from "@astrojs/starlight/components";
+
+export const sectionSchema = `
+import {defineField} from 'sanity';
+
+export default defineField({
+  name: 'myNewSection',
+  title: 'My New Section',
+  type: 'object', // type 'object' is required
+  fields: [
+    defineField({
+      name: 'showImage',
+      title: 'Show collection image',
+      description: 'Add useful info for content editor.',
+      type: 'boolean',
+    }),
+    // Section settings field is required for every sections
+    defineField({
+      type: 'sectionSettings',
+      name: 'settings',
+    }),
+  ],
+  initialValue: {},
+  preview: {},
+});
+`;
+
+export const sectionQuery = `
+export const MY_NEW_SECTION_SECTION_FRAGMENT = {
+  _key: q.string().nullable(),
+  _type: q.literal('myNewSection'),
+  showImage: q.boolean().nullable(),
+  settings: SECTION_SETTINGS_FRAGMENT,
+} satisfies Selection;
+
+// Add the the section fragment to the 'SECTION_LIST_SELECTION'
+export const SECTIONS_LIST_SELECTION = {
+"\_type == 'carouselSection'": CAROUSEL_SECTION_FRAGMENT,
+"\_type == 'collectionListSection'": COLLECTION_LIST_SECTION_FRAGMENT,
+"\_type == 'featuredCollectionSection'": FEATURED_COLLECTION_SECTION_FRAGMENT,
+"\_type == 'featuredProductSection'": FEATURED_PRODUCT_SECTION_FRAGMENT,
+"\_type == 'myNewSection'": MY_NEW_SECTION_SECTION_FRAGMENT,
+"\_type == 'imageBannerSection'": IMAGE_BANNER_SECTION_FRAGMENT,
+"\_type == 'richtextSection'": RICHTEXT_SECTION_FRAGMENT,
+};
+`;
+
+export const sectionComponent = `
+import type {TypeFromSelection} from 'groqd';
+
+import type {SectionDefaultProps} from '~/lib/type';
+import type {MY_NEW_SECTION_FRAGMENT} from '~/qroq/sections';
+// Infer props types from GROQD fragment
+type MyNewSectionProps = TypeFromSelection<typeof MY_NEW_SECTION_FRAGMENT>;
+
+export function MyNewSection(
+  props: SectionDefaultProps & {data: MyNewSectionProps},
+) {
+  const showImage = props.data.showImage;
+  return "Your Component"
+}
+`;
+
+export const sectionResolver = `
+import {lazy} from 'react';
+
+export const sections: {
+  [key: string]: React.FC<any>;
+} = {
+  carouselSection: lazy(() =>
+    import('../components/sections/CarouselSection').then((module) => ({
+      default: module.CarouselSection,
+    })),
+  ),
+  myNewSection: lazy(() =>
+    import('../components/sections/MyNewSection').then((module) => ({
+      default: module.MyNewSection,
+    })),
+  ),
+  ...
+};
+`
+
+Fluid aims to be flexible and easy to use.
+Similar to a Shopify Liquid theme, you can create sections to build your pages and organize your content.
+
+Each section is built of:
+
+- A **Sanity schema** where you can define all the section fields that the content editor will be able to edit
+- A **React component** to render the section in your Hydrogen app
+- A **GROQ query** to fetch section data from Sanity
+
+Here a the steps to create a new section:
+
+<Steps>
+1. Add a section schema file to the `studio/schemas/objects/sections`
+directory
+
+2. A section schema file should have the following structure\:<Code lang="tsx" code={sectionSchema} title="studio/schemas/objects/sections/myNewSection.tsx" />
+
+3. Add your newly created schema to the sections array located in the `studio/schema/index.ts` file.
+
+4. Add a new groq query to the `app/groq/sections.ts` file using [GROQD](/theme/groqd)\:<Code lang="tsx" code={sectionQuery} mark={`"_type == 'myNewSection'": MY_NEW_SECTION_SECTION_FRAGMENT,`} title="app/groq/sections.ts" />
+
+5. Create a new section component to the `app/components/sections/` directory\:<Code lang="tsx" code={sectionComponent} title="app/components/sections/myNewSection.tsx" />
+
+6. Add your newly created component to the `app/lib/sectionResolver.ts` file\:<Code lang="tsx" code={sectionResolver} title="app/lib/sectionResolver.ts" />
+
+7. You are all set! You can now add your new section to any page using the Sanity Studio.
+
+</Steps>
