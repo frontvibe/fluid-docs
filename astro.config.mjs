@@ -19,6 +19,9 @@ export default defineConfig({
       editLink: {
         baseUrl: repoUrl + "/edit/main/",
       },
+      components: {
+        Hero: "./src/content/components/Hero.astro",
+      },
       sidebar: [
         {
           label: "Getting started",

@@ -1,0 +1,47 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import { Code } from "@astrojs/starlight/components";
+import CTA from "@astrojs/starlight/components/CallToAction.astro";
+
+const {
+  entry: {
+    data: { title, hero },
+  },
+} = Astro.props;
+---
+
+<div
+  class="grid gap-8 pb-12 [padding-top:clamp(2.5rem,_calc(1rem+10vmin),_10rem)]"
+>
+  <div class="mx-auto grid max-w-3xl gap-4 text-center md:text-balance">
+    <h1
+      class={`
+        font-semibold leading-[--sl-line-height-headings] text-[--sl-color-white]
+        [font-size:clamp(var(--sl-text-3xl),_calc(0.25rem+5vw),_var(--sl-text-6xl))]
+      `}
+    >
+      {title}
+    </h1>
+    <p
+      class="[font-size:clamp(var(--sl-text-base),_calc(0.0625rem+2vw),_var(--sl-text-xl))]"
+    >
+      {hero.tagline}
+    </p>
+  </div>
+  <div class="hidden md:mx-auto md:block md:max-w-3xl">
+    <Code
+      code={`npx create-remix@latest --template frontvibe/fluid`}
+      lang="sh"
+      frame="none"
+    />
+  </div>
+  <div class="flex items-center justify-center gap-4">
+    {
+      hero.actions.map((action) => (
+        <CTA variant={action.variant} link={action.link} icon={action.icon}>
+          {action.text}
+        </CTA>
+      ))
+    }
+  </div>
+</div>
