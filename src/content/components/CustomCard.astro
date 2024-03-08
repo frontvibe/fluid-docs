@@ -1,0 +1,19 @@
+---
+type Props = {
+  title: string;
+  description: string;
+};
+---
+
+<div class="rounded-lg bg-[--sl-color-gray-6] p-6">
+  <div>
+    <div
+      class="flex h-8 select-none items-center [&_svg]:h-full [&_svg]:w-auto"
+    >
+      <slot name="icon" />
+    </div>
+    <div class="font-semibold">
+      <slot name="text" />
+    </div>
+  </div>
+</div>

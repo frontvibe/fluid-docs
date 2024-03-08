@@ -25,7 +25,7 @@ const {
     <p
       class="[font-size:clamp(var(--sl-text-base),_calc(0.0625rem+2vw),_var(--sl-text-xl))]"
     >
-      {hero.tagline}
+      {hero?.tagline}
     </p>
   </div>
   <div class="hidden md:mx-auto md:block md:max-w-3xl">
@@ -35,13 +35,21 @@ const {
       frame="none"
     />
   </div>
-  <div class="flex items-center justify-center gap-4">
+  <div class="flex items-center justify-center gap-8">
     {
-      hero.actions.map((action) => (
+      hero?.actions.map((action) => (
         <CTA variant={action.variant} link={action.link} icon={action.icon}>
           {action.text}
         </CTA>
       ))
     }
+    <CTA
+      icon={{ name: "external", type: "icon" }}
+      variant={"minimal"}
+      attrs={{ target: "_blank", rel: "noopener noreferrer" }}
+      link="https://fluid-demo.frontvibe.com"
+    >
+      View demo
+    </CTA>
   </div>
 </div>

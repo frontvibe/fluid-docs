@@ -1,9 +1,9 @@
 ---
 title: A Shopify theme built with Hydrogen and Sanity
-description: Fluid let's you easily build Shopify headless websites by organizing your content with the Sanity CMS.
+description: Fluid let's you easily build Shopify headless storefronts by organizing your content with the Sanity CMS.
 template: splash
 hero:
-  tagline: Fluid let's you easily build Shopify headless websites by organizing your content with Sanity.
+  tagline: Fluid let's you easily build Shopify headless storefronts by organizing your content with Sanity.
   actions:
     - text: Get started
       link: /getting-started/installation/
@@ -11,15 +11,47 @@ hero:
       variant: primary
 ---
 
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import CustomCard from "./../components/CustomCard.astro";
+import RemixLogo from "./../components/icon/Remix.astro";
+import SanityLogo from "./../components/icon/Sanity.astro";
+import HydrogenLogo from "./../components/icon/Hydrogen.astro";
+import ShadcnLogo from "./../components/icon/Shadcn.astro";
+import RadixLogo from "./../components/icon/Radix.astro";
+import TailwindLogo from "./../components/icon/Tailwind.astro";
 import { Image } from "astro:assets";
 import heroImage from "../../assets/hero.jpeg";
 
-<div class="mx-auto max-w-3xl">
-  <Image
-    class="rounded-lg shadow"
-    src={heroImage}
-    widths={[240, 540, 768, 1400, heroImage.width]}
-    sizes={`(min-width: 768px) 768px, 100vw`}
-    alt="Fluid theme"
-  />
-</div>
+<CardGrid>
+  <CustomCard>
+    <HydrogenLogo slot="icon" />
+    <p slot="text">Built with Hydrogen, Shopify's headless stack</p>
+  </CustomCard>
+  <CustomCard>
+    <div class="w-32" slot="icon">
+      <RemixLogo />
+    </div>
+    <p slot="text">A performant storefront powered by Remix</p>
+  </CustomCard>
+  <CustomCard>
+    <SanityLogo slot="icon" />
+    <p slot="text">Composable content organized with Sanity</p>
+  </CustomCard>
+  <CustomCard>
+    <div class="w-44" slot="icon">
+      <TailwindLogo />
+    </div>
+    <p slot="text">A mobile-first UI crafted with Tailwind CSS</p>
+  </CustomCard>
+  <CustomCard>
+    <RadixLogo slot="icon" />
+    <p slot="text">Fully accessible components from the Radix library</p>
+  </CustomCard>
+  <CustomCard>
+    <div slot="icon" class="flex h-full items-center gap-3">
+      <ShadcnLogo slot="icon" />
+      <span className="text-xl font-bold">shadcn/ui</span>
+    </div>
+    <p slot="text">Robust and re-usable components built with shadcn/ui</p>
+  </CustomCard>
+</CardGrid>

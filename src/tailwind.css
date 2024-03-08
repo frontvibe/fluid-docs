@@ -7,6 +7,19 @@
     @apply border-b-transparent backdrop-blur-lg supports-[backdrop-filter]:bg-[transparent];
   }
 
+  [data-theme="light"] .dark-logo {
+    display: none;
+  }
+
+  [data-theme="dark"] .light-logo {
+    display: none;
+  }
+
+  .light-logo,
+  .dark-logo {
+    margin-top: 0 !important;
+  }
+
   [data-image-component="true"] {
     @apply w-full;
   }
