@@ -6,7 +6,8 @@ import tailwind from "@astrojs/tailwind";
 import { externalLink } from "./src/plugins/externalLink";
 import { heroVideoUrl } from "./src/utils";
 
-const repoUrl = "https://github.com/frontvibe/fluid-docs";
+const docsRepoUrl = "https://github.com/frontvibe/fluid-docs";
+const fluidRepoUrl = "https://github.com/frontvibe/fluid";
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,7 +15,7 @@ export default defineConfig({
     starlight({
       title: "Fluid",
       social: {
-        github: repoUrl,
+        github: fluidRepoUrl,
       },
       head: [
         {
@@ -36,7 +37,7 @@ export default defineConfig({
       ],
       customCss: ["./src/tailwind.css"],
       editLink: {
-        baseUrl: repoUrl + "/edit/main/",
+        baseUrl: docsRepoUrl + "/edit/main/",
       },
       components: {
         Hero: "./src/content/components/Hero.astro",
