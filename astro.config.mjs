@@ -6,6 +6,8 @@ import tailwind from "@astrojs/tailwind";
 import { externalLink } from "./src/plugins/externalLink";
 
 export const repoUrl = "https://github.com/frontvibe/fluid";
+export const heroVideoUrl =
+  "https://cdn.shopify.com/videos/c/o/v/e12774c7a2fe4b5ba26933f273c167e4.mp4";
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,12 +17,31 @@ export default defineConfig({
       social: {
         github: repoUrl,
       },
+      head: [
+        {
+          tag: "link",
+          attrs: {
+            rel: "preconnect",
+            href: "https://cdn.shopify.com",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "preload",
+            as: "video",
+            href: heroVideoUrl,
+            type: "video/mp4",
+          },
+        },
+      ],
       customCss: ["./src/tailwind.css"],
       editLink: {
         baseUrl: repoUrl + "/edit/main/",
       },
       components: {
         Hero: "./src/content/components/Hero.astro",
+        Footer: "./src/content/components/Footer.astro",
       },
       sidebar: [
         {

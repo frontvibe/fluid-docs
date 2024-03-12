@@ -2,6 +2,7 @@
 import type { Props } from "@astrojs/starlight/props";
 import { Code } from "@astrojs/starlight/components";
 import CTA from "@astrojs/starlight/components/CallToAction.astro";
+import { heroVideoUrl } from "../../../astro.config.mjs";
 
 const {
   entry: {
@@ -11,7 +12,7 @@ const {
 ---
 
 <div
-  class="grid gap-8 pb-12 [padding-top:clamp(2.5rem,_calc(1rem+10vmin),_10rem)]"
+  class="grid gap-8 pb-12 [padding-top:clamp(2.5rem,_calc(1rem+10vmin),_6rem)]"
 >
   <div class="mx-auto grid max-w-3xl gap-4 text-center md:text-balance">
     <h1
@@ -28,7 +29,12 @@ const {
       {hero?.tagline}
     </p>
   </div>
-  <div class="hidden md:mx-auto md:block md:max-w-3xl">
+  <div class="flex justify-center">
+    <video muted loop playsinline autoplay class="max-w-[46rem] rounded">
+      <source src={heroVideoUrl} />
+    </video>
+  </div>
+  <div class="mt-4 hidden md:mx-auto md:block md:max-w-3xl">
     <Code
       code={`npx create-remix@latest --template frontvibe/fluid`}
       lang="sh"

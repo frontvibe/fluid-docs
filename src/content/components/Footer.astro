@@ -1,0 +1,18 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import Default from "@astrojs/starlight/components/Footer.astro";
+
+const isHomepage = Astro.props.slug === "";
+---
+
+{
+  isHomepage ? (
+    <footer class="pt-16">
+      Copyright &copy; {new Date().getFullYear()} Frontvibe Inc.
+    </footer>
+  ) : (
+    <Default {...Astro.props}>
+      <slot />
+    </Default>
+  )
+}
