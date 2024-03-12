@@ -4,10 +4,7 @@ import react from "@astrojs/react";
 
 import tailwind from "@astrojs/tailwind";
 import { externalLink } from "./src/plugins/externalLink";
-
-export const repoUrl = "https://github.com/frontvibe/fluid";
-export const heroVideoUrl =
-  "https://cdn.shopify.com/videos/c/o/v/e12774c7a2fe4b5ba26933f273c167e4.mp4";
+import { heroVideoUrl, repoUrl } from "./src/utils";
 
 // https://astro.build/config
 export default defineConfig({

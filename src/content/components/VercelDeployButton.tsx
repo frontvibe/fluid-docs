@@ -1,4 +1,4 @@
-import { repoUrl } from "../../../astro.config.mjs";
+import { repoUrl } from "../../utils";
 
 export function VercelDeployButton() {
   const url = encodeURI(
