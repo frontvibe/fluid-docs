@@ -8,6 +8,7 @@ import { heroVideoUrl } from "./src/utils";
 
 const docsRepoUrl = "https://github.com/frontvibe/fluid-docs";
 const fluidRepoUrl = "https://github.com/frontvibe/fluid";
+const ogUrl = "https://fluid.frontvibe.com/fluid-og.jpg";
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,6 +33,48 @@ export default defineConfig({
             as: "video",
             href: heroVideoUrl,
             type: "video/mp4",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            content: ogUrl,
+            property: "og:image",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            content: ogUrl,
+            property: "og:image:secure_url",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            content: ogUrl,
+            property: "twitter:image",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            content: "image/jpeg",
+            property: "og:image:type",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            content: "1200",
+            property: "og:image:width",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            content: "628",
+            property: "og:image:heigth",
           },
         },
       ],
