@@ -31,15 +31,6 @@ export default defineConfig({
           },
         },
         {
-          tag: "link",
-          attrs: {
-            rel: "preload",
-            as: "video",
-            href: heroVideoUrl,
-            type: "video/mp4",
-          },
-        },
-        {
           tag: "meta",
           attrs: {
             content: ogUrl,
