@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import react from "@astrojs/react";
+import vercel from "@astrojs/vercel/static";
 
 import tailwind from "@astrojs/tailwind";
 import { externalLink } from "./src/plugins/externalLink";
@@ -12,6 +13,9 @@ const ogUrl = "https://fluid.frontvibe.com/fluid-og.jpg";
 
 // https://astro.build/config
 export default defineConfig({
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   integrations: [
     starlight({
       title: "Fluid",
