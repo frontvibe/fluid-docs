@@ -255,3 +255,13 @@ You can use the following commands if you need to launch each apps separately:
     <Code lang="sh" code={`npm run dev:app\nnpm run dev:studio`} />
   </TabItem>
 </Tabs>
+
+## Troubleshooting
+
+### Sanity login error
+
+```shell
+Error: --with-user-token specified, but no auth token could be found. Run `sanity login`
+```
+
+Run `npx -y sanity@latest login` to login to your Sanity account.
