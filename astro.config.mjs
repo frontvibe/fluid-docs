@@ -5,7 +5,6 @@ import vercel from "@astrojs/vercel/static";
 
 import tailwind from "@astrojs/tailwind";
 import { externalLink } from "./src/plugins/externalLink";
-import { heroVideoUrl } from "./src/utils";
 
 const docsRepoUrl = "https://github.com/frontvibe/fluid-docs";
 const fluidRepoUrl = "https://github.com/frontvibe/fluid";
@@ -13,6 +12,7 @@ const ogUrl = "https://fluid.frontvibe.com/fluid-og.jpg";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://fluid.frontvibe.com",
   adapter: vercel({
     webAnalytics: { enabled: true },
   }),
