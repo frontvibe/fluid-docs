@@ -7,7 +7,7 @@ import { Code, Tabs, TabItem } from "@astrojs/starlight/components";
 ## Requirements
 
 - Node.js v16.13+
-- An active Shopify store
+- An active Shopify store (learn how to create one [here](https://help.shopify.com)) or a Shopify [development store](https://help.shopify.com/en/partners/dashboard/managing-stores/development-stores).
 - A Sanity account (you can create one [here](https://www.sanity.io/login/sign-up))
 
 In addition to these requirements, we recommend understanding the basics of [React](https://react.dev/), [Sanity](https://www.sanity.io/docs/getting-started-with-sanity), [Remix](https://remix.run/) and [Hydrogen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started) to get the most out of Fluid.
@@ -63,11 +63,11 @@ Once you've installed the channel, you'll need to update the `.env` file with yo
 
 The Public access token will be your `PUBLIC_STOREFRONT_API_TOKEN` and the Private access token will be your `PRIVATE_STOREFRONT_API_TOKEN`.
 
-You can also replace the `PUBLIC_STORE_DOMAIN` with your store's domain.
+You can also replace the `PUBLIC_STORE_DOMAIN` with your store's domain (xxx.myshopify.com). You can find your store's domain in the Shopify admin dashboard > Settings > Domains.
 
 ## Step 3: Update Sanity CORS
 
-Go to your Sanity admin dashboard and add every hosts that we'll need to connect to the Sanity project API.
+Go to your Sanity admin dashboard `npx sanity@latest manage` and add every hosts that we'll need to connect to the Sanity project API.
 We suggest to add `http://localhost:*` and any production domain that you want to use.
 Use can use the wildcard `*` to allow multiple domains. Please note that you'll also need to add your Sanity Studio production domain.
 
@@ -120,12 +120,15 @@ SANITY_STUDIO_SHOPIFY_SHOP_HANDLE="fluid-demo"
 
 #### `SESSION_SECRET`
 
-The `SESSION_SECRET` variable will be used to sign cookies. You should create a unique secret and add it to your `.env` file.
+The `SESSION_SECRET` variable will be used to sign cookies.
+You should create a unique secret and add it to your `.env` file.
+It can be any random string that you can generate by yourself.
 More info about signing cookies in Remix can be found [here](https://remix.run/docs/en/main/utils/cookies#signing-cookies).
 
 #### `PUBLIC_STORE_DOMAIN`
 
 The `PUBLIC_STORE_DOMAIN` variable will be used to connect to your Shopify store.
+You can find your store's domain in the Shopify admin dashboard > Settings > Domains (xxx.myshopify.com).
 
 #### `PUBLIC_STOREFRONT_API_TOKEN`
 
@@ -174,9 +177,9 @@ More info about [Sanity Loaders and Overlays](https://www.sanity.io/docs/loaders
 Used by the Sanity Studio to build your products and collections url.
 Your Shopify handle is the begining of your Shopify domain url (`HANDLE.myshopify.com`).
 
-## Step 6: Countries and Internationalization
+## Step 6: Countries, Currencies and Internationalization
 
-Update the `countries/index.ts` file to add or update countries and languages.
+Update the `countries/index.ts` file to add or update countries, currencies and languages.
 The default country will be used as a fallback when no country is found in the url.
 This file is shared across your Hydrogen app and Sanity studio.
 
@@ -203,6 +206,9 @@ export const countries: Localizations = {
 };
 `}
 />
+
+Under the hood, Fluid fetches countries, currencies and languages from Shopify. You can manage your Markets from the Shopify admin to add new currencies for example, learn more about [Shopify Markets](https://help.shopify.com/en/manual/markets).
+Every content from Shopify is translatable from the Shopify admin. You can install and use Shopify's free and official [Translate and Adapt app](https://apps.shopify.com/translate-and-adapt).
 
 ## Step 7: Launch your app
 
