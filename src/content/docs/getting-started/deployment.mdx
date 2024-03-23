@@ -62,3 +62,137 @@ Run the following command if you want to host your studio on Sanity:
 </Tabs>
 
 More info about [deploying Sanity](https://www.sanity.io/docs/deployment).
+
+## Troubleshooting
+
+### Oxygen deployment
+
+If you try to deploy Fluid to Oxygen using `pnpm` as a dependency manager, deployment might fail with the following error:
+
+```
+The `npm ci` command can only install with an existing package-lock.json or
+npm-shrinkwrap.json with lockfileVersion >= 1. Run an install with npm@5 or
+later to generate a package-lock.json file, then try again.
+```
+
+When deploying to Oxygen, Shopify will automatically create a Pull Request with the following Github Action:
+
+```yml "1000016008"
+# Don't change the line below!
+#! oxygen_storefront_id: 1000016008
+
+name: Storefront 1000016008
+on: [push]
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy to Oxygen
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          check-latest: true
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and Publish to Oxygen
+        run: npx shopify hydrogen deploy
+        env:
+          SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000016008 }}
+```
+
+Unfortunately, this Github Action will fail if your repo is using `pnpm` because it is looking for a `package-lock.json` lockfile.
+
+To fix this you can update your Github Action as follows (don't forget to update the Oxygen Storefront ID):
+
+```yml "1000016008" del={25-39} ins={40-61}
+# Don't change the line below!
+#! oxygen_storefront_id: 1000016008
+
+name: Storefront 1000016008
+on: [push]
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy to Oxygen
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          check-latest: true
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: npm ci
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache node modules
+        id: cache-pnpm
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build and Publish to Oxygen
+        run: npx shopify hydrogen deploy
+        env:
+          SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000016008 }}
+```
