@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     reviewers:
-      - 'thomasKn'
+      - 'frontvibe/maintainers'
     schedule:
       interval: 'weekly'
       time: '05:30'
