@@ -105,6 +105,8 @@ SESSION_SECRET="topSecret"
 PUBLIC_STORE_DOMAIN="fluid-demo.myshopify.com"
 PUBLIC_STOREFRONT_API_TOKEN="046fc93a591ca78ec9dc34657b660ac6"
 PRIVATE_STOREFRONT_API_TOKEN="shpat_•••••••••••••••••••••••••"
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID="shp_•••••••••••••••••••••••••"
+PUBLIC_CUSTOMER_ACCOUNT_API_URL="https://shopify.com/•••••••••••••••"
 PUBLIC_STOREFRONT_ID="22227"
 PUBLIC_STOREFRONT_API_VERSION="2024-01"
 PUBLIC_CHECKOUT_DOMAIN="checkout.frontvibe.com"
@@ -149,6 +151,16 @@ The production shop checkout domain url.
 
 The `PUBLIC_STOREFRONT_ID` can be found in the Shopify url of your storefront. If you installed the Hydrogen channel it can be found at `https://admin.shopify.com/store/STORE_NAME/custom_storefronts/YOUR_ID`.\
 If you installed the Headless channel it can be found at `https://admin.shopify.com/store/STORE_NAME/headless_storefronts/YOUR_ID`.
+
+#### `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID`
+
+A token prefixed with `shp_` that represents a client secret used in all authentication requests.
+The `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` can be found in Customer Account API settings page > Customer Account API Credentials
+
+#### `PUBLIC_CUSTOMER_ACCOUNT_API_URL`
+
+The target URI origin of authentication requests. For example: `https://shopify.com/<your-shopify-store-id>`.
+The `PUBLIC_CUSTOMER_ACCOUNT_API_URL` can be found in Customer Account API settings page > Application endpoints The URI is the common base URL of all the endpoints listed in the card.
 
 #### `SANITY_STUDIO_PROJECT_ID`
 
@@ -215,7 +227,28 @@ export const countries: Localizations = {
 Under the hood, Fluid fetches countries, currencies and languages from Shopify. You can manage your Markets from the Shopify admin to add new currencies for example, learn more about [Shopify Markets](https://help.shopify.com/en/manual/markets).
 Every content from Shopify is translatable from the Shopify admin. You can install and use Shopify's free and official [Translate and Adapt app](https://apps.shopify.com/translate-and-adapt).
 
-## Step 7: Launch your app
+## Step 7: Set up the Customer Account
+
+#### Update the application setup
+
+For the Customer Account API to recognize your domain as a valid authentication host, edit your Customer Account API settings.
+
+Under Application setup, click Edit ✎ to edit the endpoints.
+Under Callback URI(s), click Add Callback URI, and add your production domain, with /account/authorize appended:
+
+```
+https://<your-production-domain>/account/authorize
+```
+
+This is the URI your application will redirect to to continue the OAuth process after a successful customer login.
+
+Under JavaScript origin(s), click Add origin, and then add your production domain.
+
+Under Logout URI, click Add Logout URI, and then add your production domain.
+
+Please read the official [Shopify guide](https://shopify.dev/docs/storefronts/headless/building-with-the-customer-account-api/hydrogen) for more information.
+
+## Step 8: Launch your app
 
 Before launching your app, you'll need to install the dependencies of your Hydrogen app and Sanity Studio:
 
