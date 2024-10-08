@@ -1,7 +1,7 @@
 ---
 import type { Props } from "@astrojs/starlight/props";
 import { Code } from "@astrojs/starlight/components";
-import CTA from "@astrojs/starlight/components/CallToAction.astro";
+import { LinkButton } from "@astrojs/starlight/components";
 import { heroVideoUrl } from "../../utils";
 
 const {
@@ -51,18 +51,23 @@ const {
   <div class="flex items-center justify-center gap-8">
     {
       hero?.actions.map((action) => (
-        <CTA variant={action.variant} link={action.link} icon={action.icon}>
+        <LinkButton
+          variant={action.variant}
+          href={action.link}
+          icon={action.icon?.name}
+        >
           {action.text}
-        </CTA>
+        </LinkButton>
       ))
     }
-    <CTA
-      icon={{ name: "external", type: "icon" }}
+    <LinkButton
+      icon="external"
       variant={"minimal"}
-      attrs={{ target: "_blank", rel: "noopener noreferrer" }}
-      link="https://fluid-demo.frontvibe.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://fluid-demo.frontvibe.com"
     >
       View demo
-    </CTA>
+    </LinkButton>
   </div>
 </div>
