@@ -5,10 +5,8 @@ import { LinkButton } from "@astrojs/starlight/components";
 import { heroVideoUrl } from "../../utils";
 
 const {
-  entry: {
-    data: { title, hero },
-  },
-} = Astro.props;
+  data: { title, hero },
+} = Astro.props.entry;
 ---
 
 <div
