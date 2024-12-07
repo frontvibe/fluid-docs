@@ -97,12 +97,12 @@ Each section is built of:
 Here a the steps to create a new section:
 
 <Steps>
-1. Add a section schema file to the `studio/schemas/objects/sections`
+1. Add a section schema file to the `app/sanity/schemas/objects/sections`
 directory
 
-2. A section schema file should have the following structure\:<Code lang="tsx" code={sectionSchema} title="studio/schemas/objects/sections/myNewSection.tsx" />
+2. A section schema file should have the following structure\:<Code lang="tsx" code={sectionSchema} title="app/sanity/schemas/objects/sections/myNewSection.tsx" />
 
-3. Add your newly created schema to the sections array located in the `studio/schema/index.ts` file.
+3. Add your newly created schema to the sections array located in the `app/sanity/schema/index.ts` file.
 
 4. Add a new groq query to the `app/groq/sections.ts` file using [GROQD](/theme/groqd)\:<Code lang="tsx" code={sectionQuery} mark={`"_type == 'myNewSection'": MY_NEW_SECTION_SECTION_FRAGMENT,`} title="app/groq/sections.ts" />
 
