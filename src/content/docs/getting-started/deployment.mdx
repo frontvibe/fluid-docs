@@ -14,12 +14,17 @@ import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
     official [Shopify
     guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started#step-3-install-the-hydrogen-channel).
   </TabItem>
-  <TabItem label="Vercel">
-    You can use [Vercel](http://vercel.com/) to deploy your Hydrogen app to their
-    global edge network with zero configuration. This guide includes
-    instructions for deploying to Vercel through the website UI or Vercel's CLI.
+  <TabItem label="Vercel (deprecated)">
 
-    **Website UI Deployment**
+    You can use [Vercel](http://vercel.com/) to deploy your Hydrogen app to their global edge network. This guide includes instructions for deploying to Vercel through the website UI or Vercel's CLI.
+
+    ### Deprecated Notice
+
+    With the migration to Vite in the [Hydrogen April 2024 release](https://hydrogen.shopify.dev/update/april-2024), the existing Vercel adapter has become incompatible.
+
+    In the interim, if you wish to continue using Vercel, you must utilize the classic remix compiler. The necessary code remains accessible on our [classic-compiler branch](https://github.com/frontvibe/fluid/tree/classic-compiler).
+
+    #### Website UI Deployment
 
     1. Push your code to your online Git repository (GitHub, GitLab, BitBucket).
     2. [Import your project](https://vercel.com/new) into Vercel.
@@ -29,7 +34,7 @@ import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 
     After your project has been imported and deployed, all subsequent pushes to branches will generate [Preview Deployments](https://vercel.com/docs/concepts/deployments/preview-deployments), and all changes made to the Production Branch (commonly “main”) will result in a [Production Deployment](https://vercel.com/docs/concepts/deployments/environments#production).
 
-    **CLI Deployment**
+    #### CLI Deployment
 
     1. Install the [Vercel CLI](https://vercel.com/cli) and run `vercel` to deploy.
 

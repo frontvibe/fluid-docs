@@ -1,12 +1,9 @@
 ---
-import type { Props } from "@astrojs/starlight/props";
 import { Code } from "@astrojs/starlight/components";
 import { LinkButton } from "@astrojs/starlight/components";
 import { heroVideoUrl } from "../../utils";
 
-const {
-  data: { title, hero },
-} = Astro.props.entry;
+const { title, hero } = Astro.locals.starlightRoute.entry.data;
 ---
 
 <div
@@ -40,11 +37,7 @@ const {
     </video>
   </div>
   <div class="mt-4 hidden md:mx-auto md:block md:max-w-3xl">
-    <Code
-      code={`npx create-remix@latest --template frontvibe/fluid`}
-      lang="sh"
-      frame="none"
-    />
+    <Code code={`npm create fluid@latest`} lang="sh" frame="none" />
   </div>
   <div class="flex items-center justify-center gap-8">
     {
