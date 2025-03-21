@@ -152,8 +152,8 @@ export default defineConfig({
               link: "/theme/css-styling",
             },
             {
-              label: "Sanity queries",
-              link: "/theme/sanity-queries",
+              label: "GROQD",
+              link: "/theme/groqd",
             },
           ],
         },

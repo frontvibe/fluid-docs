@@ -30,32 +30,31 @@ export default defineField({
 `;
 
 export const sectionQuery = `
-export const MY_NEW_SECTION_SECTION_FRAGMENT = {
-  _key: q.string().nullable(),
-  _type: q.literal('myNewSection'),
-  showImage: q.boolean().nullable(),
-  settings: SECTION_SETTINGS_FRAGMENT,
-} satisfies Selection;
+export const MY_NEW_SECTION_SECTION_FRAGMENT = defineQuery(\`{
+  _key,
+  _type,
+  showImage,
+  settings \${SECTION_SETTINGS_FRAGMENT}
+}\`);
 
-// Add the the section fragment to the 'SECTION_LIST_SELECTION'
-export const SECTIONS_LIST_SELECTION = {
-"\_type == 'carouselSection'": CAROUSEL_SECTION_FRAGMENT,
-"\_type == 'collectionListSection'": COLLECTION_LIST_SECTION_FRAGMENT,
-"\_type == 'featuredCollectionSection'": FEATURED_COLLECTION_SECTION_FRAGMENT,
-"\_type == 'featuredProductSection'": FEATURED_PRODUCT_SECTION_FRAGMENT,
-"\_type == 'myNewSection'": MY_NEW_SECTION_SECTION_FRAGMENT,
-"\_type == 'imageBannerSection'": IMAGE_BANNER_SECTION_FRAGMENT,
-"\_type == 'richtextSection'": RICHTEXT_SECTION_FRAGMENT,
-};
+// Add the the section fragment to 'SECTIONS_FRAGMENT'
+export const SECTIONS_FRAGMENT = () =>
+  defineQuery(\`
+    \_type == 'richtextSection' => \${RICHTEXT_SECTION_FRAGMENT},
+    \_type == 'carouselSection' => \${CAROUSEL_SECTION_FRAGMENT},
+    \_type == 'collectionListSection' => \${COLLECTION_LIST_SECTION_FRAGMENT},
+    \_type == 'featuredProductSection' => \${FEATURED_PRODUCT_SECTION_FRAGMENT},
+    \_type == 'featuredCollectionSection' => \${FEATURED_COLLECTION_SECTION_FRAGMENT},
+    \_type == 'imageBannerSection' => \${IMAGE_BANNER_SECTION_FRAGMENT},
+    \_type == 'myNewSection' => \${MY_NEW_SECTION_SECTION_FRAGMENT},
+  \`);
 `;
 
 export const sectionComponent = `
-import type {TypeFromSelection} from 'groqd';
+import type {SectionDefaultProps, SectionOfType} from 'types';
 
-import type {SectionDefaultProps} from '~/lib/type';
-import type {MY_NEW_SECTION_FRAGMENT} from '~/qroq/sections';
-// Infer props types from GROQD fragment
-type MyNewSectionProps = TypeFromSelection<typeof MY_NEW_SECTION_FRAGMENT>;
+// Infer props types from Sanity TypeGen
+type MyNewSectionProps = SectionOfType<'myNewSection'>;
 
 export function MyNewSection(
   props: SectionDefaultProps & {data: MyNewSectionProps},
@@ -66,21 +65,16 @@ export function MyNewSection(
 `;
 
 export const sectionResolver = `
-import {lazy} from 'react';
+...
+
+import {MyNewSection} from '~/components/sections/my-new-section';
 
 export const sections: {
   [key: string]: React.FC<any>;
 } = {
-  carouselSection: lazy(() =>
-    import('../components/sections/CarouselSection').then((module) => ({
-      default: module.CarouselSection,
-    })),
-  ),
-  myNewSection: lazy(() =>
-    import('../components/sections/MyNewSection').then((module) => ({
-      default: module.MyNewSection,
-    })),
-  ),
+  carouselSection: CarouselSection,
+  collectionBannerSection: CollectionBannerSection,
+  myNewSection: MyNewSection,
   ...
 };
 `
@@ -100,15 +94,15 @@ Here a the steps to create a new section:
 1. Add a section schema file to the `app/sanity/schemas/objects/sections`
 directory
 
-2. A section schema file should have the following structure\:<Code lang="tsx" code={sectionSchema} title="app/sanity/schemas/objects/sections/myNewSection.tsx" />
+2. A section schema file should have the following structure\:<Code lang="tsx" code={sectionSchema} title="app/sanity/schemas/objects/sections/my-new-section.ts" />
 
 3. Add your newly created schema to the sections array located in the `app/sanity/schema/index.ts` file.
 
-4. Add a new groq query to the `app/groq/sections.ts` file using [GROQD](/theme/groqd)\:<Code lang="tsx" code={sectionQuery} mark={`"_type == 'myNewSection'": MY_NEW_SECTION_SECTION_FRAGMENT,`} title="app/groq/sections.ts" />
+4. Add a new groq query to the `app/data/sanity/sections.ts` file using [GROQ](https://www.sanity.io/docs/groq)\:<Code lang="tsx" code={sectionQuery} mark={`\_type == 'myNewSection' => \${MY_NEW_SECTION_SECTION_FRAGMENT},`} title="app/data/sanity/sections.ts" />
 
-5. Create a new section component to the `app/components/sections/` directory\:<Code lang="tsx" code={sectionComponent} title="app/components/sections/myNewSection.tsx" />
+5. Create a new section component to the `app/components/sections/` directory\:<Code lang="tsx" code={sectionComponent} title="app/components/sections/my-new-section.tsx" />
 
-6. Add your newly created component to the `app/lib/sectionResolver.ts` file\:<Code lang="tsx" code={sectionResolver} title="app/lib/sectionResolver.ts" />
+6. Add your newly created component to the `app/lib/sectionResolver.ts` file\:<Code lang="tsx" code={sectionResolver} title="app/lib/section-sesolver.ts" />
 
 7. You are all set! You can now add your new section to any page using the Sanity Studio.
 
