@@ -2,7 +2,7 @@
 title: Installation
 ---
 
-import { Code, Tabs, TabItem } from "@astrojs/starlight/components";
+import { Code, Tabs, TabItem, Steps, Aside } from "@astrojs/starlight/components";
 
 ## Requirements
 
@@ -12,83 +12,181 @@ import { Code, Tabs, TabItem } from "@astrojs/starlight/components";
 
 In addition to these requirements, we recommend understanding the basics of [React](https://react.dev/), [Sanity](https://www.sanity.io/docs/getting-started-with-sanity), [Remix](https://remix.run/) and [Hydrogen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started) to get the most out of Fluid.
 
-## Step 1: Create a new Fluid project
+## Create a new Fluid project
 
-Clone the Fluid repository using the following commands in your terminal:
+<Steps>
 
-<Code
-  lang="sh"
-  code={`
-# Clone the Fluid repository\nnpm create fluid@latest
+1. Initialize a new Fluid project using the following command in your terminal:
 
-# Create a new Sanity project\nnpx sanity@latest init --env .env.sanity
+   <Tabs>
+     <TabItem label="npm" icon="seti:npm">
+       <Code lang="sh" code={`npm create fluid@latest`} />
+     </TabItem>
+     <TabItem label="pnpm" icon="pnpm">
+       <Code lang="sh" code={`pnpm create fluid@latest`} />
+     </TabItem>
+     <TabItem label="yarn" icon="seti:yarn">
+       <Code lang="sh" code={`yarn create fluid`} />
+     </TabItem>
+   </Tabs>
 
-`}
-/>
+2. Now that your project has been created, you can `cd` into your new project directory.
 
-The `npx sanity@latest` command will create a new Sanity project and generate a `.env.sanity` file in your project directory with your `SANITY_PROJECT_ID` and `SANITY_DATASET`.
-You can use these variables in your `.env` file. More details about environment variables can be found [here](#step-5-environment-variables).
+3. ### Install dependencies
 
-## Step 2: Install the Hydrogen or Headless channel
+    If you skipped the ***Install dependencies?*** step during the CLI wizard, then be sure to install your dependencies before continuing.
 
-To use Fluid, you'll need to install the Hydrogen or Headless channel.
-These Shopify channels will generate access tokens to connect Fluid to your store.
+    <Tabs>
+      <TabItem label="npm" icon="seti:npm">
+        <Code lang="sh" code={`npm install`} />
+      </TabItem>
+      <TabItem label="pnpm" icon="pnpm">
+        <Code lang="sh" code={`pnpm install`} />
+      </TabItem>
+      <TabItem label="yarn" icon="seti:yarn">
+        <Code lang="sh" code={`yarn install`} />
+      </TabItem>
+    </Tabs>
 
-The Hydrogen channel is available for all Shopify plans (Basic, Shopify, Advanced, or Plus plan).
-Development stores aren't supported at this time, but you can install the Headless channel and it will work the same.
+4. ### Initialize or link an existing Hydrogen storefront
+    
+    If you skipped the ***Initialize or link an existing Hydrogen storefront?*** step during the CLI wizard, then be sure to initialize or link an existing Hydrogen storefront:
 
-<Tabs>
-  <TabItem label="Hydrogen channel">
-    The Hydrogen channel is required if you plan to deploy your wesbite on
-    Oxygen (Shopify's global hosting solution). Once you install the [Hydrogen
-    channel](https://apps.shopify.com/hydrogen) you'll need to create a new
-    storefront. We invite you to follow the official [Shopify's
-    instructions](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started#step-3-install-the-hydrogen-channel)
-    to get started.
-  </TabItem>
-  <TabItem label="Headless channel">
-    The Headless channel is the right choice if you want to use an alternative
-    hosting solution such as Vercel. It'll give you the exact same experience as
-    the Hydrogen channel. You can install the [Headless channel
-    here](https://apps.shopify.com/headless) and create a new storefront.
-  </TabItem>
-</Tabs>
+    <Tabs>
+      <TabItem label="Hydrogen channel">
+        If you have a paid Shopify plan, it's recommended to install and setup the [Hydrogen channel](https://apps.shopify.com/hydrogen).
+        
+        The Hydrogen channel is available for all Shopify plans (Basic, Shopify, Advanced, or Plus plan) and will allow you to deploy your wesbite on Oxygen (Shopify's global hosting solution).
+        Once you install the Hydrogen channel you'll need to create a new storefront.
+        We invite you to follow the official [Shopify's instructions](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started#step-3-install-the-hydrogen-channel)
+        to get started.
 
-Once you've installed the channel, you'll need to update the `.env` file with your access tokens. You can safely duplicate the `.env.template` file and name it `.env`.
+        <Aside type="caution">
+          Development stores aren't supported at this time, but you can install the Headless channel and it will work the same.
+        </Aside>
 
-![API tokens](../../../assets/api_tokens.png)
+        To link your Hydrogen storefront to your project, run the following command:
 
-The Public access token will be your `PUBLIC_STOREFRONT_API_TOKEN` and the Private access token will be your `PRIVATE_STOREFRONT_API_TOKEN`.
+        <Code lang="sh" code={`npx shopify@latest hydrogen link`} />
 
-You can also replace the `PUBLIC_STORE_DOMAIN` with your store's domain (xxx.myshopify.com). You can find your store's domain in the Shopify admin dashboard > Settings > Domains.
+        To pull the environment variables from the Hydrogen storefront, run the following command:
 
-## Step 3: Update Sanity CORS
+        <Code lang="sh" code={`npx shopify@latest hydrogen env pull`} />
+      </TabItem>
+      <TabItem label="Headless channel">
+        The Headless channel is the right choice if you don't have a paid Shopify plan. It'll give you the exact same experience as
+        the Hydrogen channel, except you won't be able to deploy your wesbite on Oxygen. You can install the [Headless channel
+        here](https://apps.shopify.com/headless) and create a new storefront.
 
-Go to your Sanity admin dashboard `npx sanity@latest manage` and add every hosts that we'll need to connect to the Sanity project API.
-We suggest to add `http://localhost:*` and any production domain that you want to use.
-Use can use the wildcard `*` to allow multiple domains.
+        Once you've installed the channel, you'll need to update the `.env` file with your access tokens. You can safely duplicate the `.env.template` file and name it `.env`.
 
-![Sanity CORS](../../../assets/sanity_cors.png)
+        ![API tokens](../../../assets/api_tokens.png)
 
-## Step 4: Install the Sanity Connect app
+        The Public access token will be your `PUBLIC_STOREFRONT_API_TOKEN` and the Private access token will be your `PRIVATE_STOREFRONT_API_TOKEN`.
 
-To automatically synchronize your Shopify products and collections with your Sanity project, add the [Sanity Connect app](https://apps.shopify.com/sanity-connect) in your Shopify store.
-Select the Sanity project you created and the dataset.
+        You can also replace the `PUBLIC_STORE_DOMAIN` with your store's domain (xxx.myshopify.com). You can find your store's domain in the Shopify admin dashboard > Settings > Domains.
+      </TabItem>
+    </Tabs>
 
-![Sanity connect app](../../../assets/sanity_connect.png)
+5. ### Initialize or link an existing Sanity project
+    
+    If you skipped the ***Initialize or link an existing Sanity project?*** step during the CLI wizard, then be sure to initialize or link an existing Sanity project:
 
-Leave the default settings and start synchronizing:
+    <Code lang="sh" code={`npx sanity@latest init --env .env.sanity`} />
 
-![Sanity connect app sync](../../../assets/sanity_connect_sync.png)
+    This command will create or link an existing Sanity project and generate a `.env.sanity` file in your project directory with your `PUBLIC_SANITY_STUDIO_PROJECT_ID` and `PUBLIC_SANITY_STUDIO_DATASET`.
+    You can use these variables in your `.env` file. More details about environment variables can be found [here](#environment-variables).
 
-Now, each time you add or update a Shopify product or collection, your Sanity project will be automatically updated!
+    If needed, run the following command to login to your Sanity account:
 
-Please note that the Sanity connect app won't automatically delete products or collections that are no longer in your Shopify store.
-If you you to completely delete a product or a collection from your Sanity project, you'll have to do it manually:
+    <Code lang="sh" code={`npx -y sanity@latest login`} />
 
-![Sanity delete collection](../../../assets/sanity_delete_collection.png)
+6. ### Update Sanity CORS
 
-## Step 5: Environment variables
+    If you skipped the ***Initialize or link an existing Sanity project?*** step during the CLI wizard, run the following command to update Sanity CORS:
+
+    <Code lang="sh" code={`npm run create:cors`} />
+
+    The `create:cors` script will automatically add the hosts to the Sanity CORS settings.
+
+    You can also go to your Sanity admin dashboard `npx sanity@latest manage` and manually add every hosts that we'll need to connect to the Sanity project API.
+    We suggest to add `http://localhost:*` and any production domain that you want to use.
+    Use can use the wildcard `*` to allow multiple domains.
+
+    ![Sanity CORS](../../../assets/sanity_cors.png)
+
+7. ### Create a Sanity viewer token
+
+    If you skipped the ***Initialize or link an existing Sanity project?*** step during the CLI wizard, run the following command to create a Sanity viewer token:
+
+    <Code lang="sh" code={`npm run create:token`} />
+
+    The `create:token` script will automatically create a Sanity viewer token and add it to your `.env` file.
+
+    You can also create a viewer token manually in your Sanity admin dashboard `npx sanity@latest manage`, and add it to your `.env` file.
+
+8. ### Install the Sanity Connect app
+
+    To automatically synchronize your Shopify products and collections with your Sanity project, add the [Sanity Connect app](https://apps.shopify.com/sanity-connect) in your Shopify store.
+    Select the Sanity project you created and the dataset.
+
+    ![Sanity connect app](../../../assets/sanity_connect.png)
+
+    Leave the default settings and start synchronizing:
+
+    ![Sanity connect app sync](../../../assets/sanity_connect_sync.png)
+
+    Now, each time you add or update a Shopify product or collection, your Sanity project will be automatically updated!
+
+    Please note that the Sanity connect app won't automatically delete products or collections that are no longer in your Shopify store.
+    If you you to completely delete a product or a collection from your Sanity project, you'll have to do it manually:
+
+    ![Sanity delete collection](../../../assets/sanity_delete_collection.png)
+
+9. ### Create initial Sanity data
+
+    <Aside type="caution">
+      This step will run a script that will create the initial Sanity data (pages, singletons, theme content, settings, etc.).
+      Please run it carefully, to avoid any data loss.
+    </Aside>
+
+    To create the initial Sanity data, run the following command in your terminal:
+
+    <Tabs>
+      <TabItem label="npm" icon="seti:npm">
+        <Code lang="sh" code={"npm run create:initial"} />
+      </TabItem>
+      <TabItem label="pnpm" icon="pnpm">
+        <Code lang="sh" code={"pnpm run create:initial"} />
+      </TabItem>
+      <TabItem label="yarn" icon="seti:yarn">
+        <Code lang="sh" code={"yarn run create:initial"} />
+      </TabItem>
+    </Tabs>
+
+    This command will run the `create:initial` script that will create the initial Sanity documents and singletons.
+
+10. ### Launch your app
+
+    To launch your app, run the following command in your terminal:
+
+    <Tabs>
+      <TabItem label="npm" icon="seti:npm">
+        <Code lang="sh" code={"npm run dev"} />
+      </TabItem>
+      <TabItem label="pnpm" icon="pnpm">
+        <Code lang="sh" code={"pnpm run dev"} />
+      </TabItem>
+      <TabItem label="yarn" icon="seti:yarn">
+        <Code lang="sh" code={"yarn run dev"} />
+      </TabItem>
+    </Tabs>
+
+    This command will start the Hydrogen app in development mode.
+    
+</Steps>
+
+## Environment variables
 
 Fluid requires the following environment variables to function properly.
 Some will be used by the Hydrogen app to connect to your Shopify store, and some will be used by the Sanity Studio.
@@ -182,7 +280,7 @@ More info about [Sanity Loaders and Overlays](https://www.sanity.io/docs/loaders
 
 A viewer token is required for server-side fetching of draft content as well as "stega encoding" for Visual Editing.
 
-## Step 6: Countries, Currencies and Internationalization
+## Countries, Currencies and Internationalization
 
 Update the `countries/index.ts` file to add or update countries, currencies and languages.
 The default country will be used as a fallback when no country is found in the url.
@@ -215,7 +313,7 @@ export const countries: Localizations = {
 Under the hood, Fluid fetches countries, currencies and languages from Shopify. You can manage your Markets from the Shopify admin to add new currencies for example, learn more about [Shopify Markets](https://help.shopify.com/en/manual/markets).
 Every content from Shopify is translatable from the Shopify admin. You can install and use Shopify's free and official [Translate and Adapt app](https://apps.shopify.com/translate-and-adapt).
 
-## Step 7: Set up the Customer Account
+## Customer Account settings
 
 #### Update the application setup
 
@@ -235,58 +333,6 @@ Under JavaScript origin(s), click Add origin, and then add your production domai
 Under Logout URI, click Add Logout URI, and then add your production domain.
 
 Please read the official [Shopify guide](https://shopify.dev/docs/storefronts/headless/building-with-the-customer-account-api/hydrogen) for more information.
-
-## Step 8: Launch your app
-
-Before launching your app, you'll need to install the dependencies of your Hydrogen app:
-
-<Tabs>
-  <TabItem label="pnpm" icon="pnpm">
-    <Code lang="sh" code={`pnpm install`} />
-  </TabItem>
-  <TabItem label="yarn" icon="seti:yarn">
-    <Code lang="sh" code={`yarn install`} />
-  </TabItem>
-  <TabItem label="npm" icon="seti:npm">
-    <Code lang="sh" code={`npm install`} />
-  </TabItem>
-</Tabs>
-
-### Create initial Sanity data
-
-To create the initial Sanity data, run the following command in your terminal:
-
-<Tabs>
-  <TabItem label="pnpm" icon="pnpm">
-    <Code lang="sh" code={"pnpm run create:initial"} />
-  </TabItem>
-  <TabItem label="yarn" icon="seti:yarn">
-    <Code lang="sh" code={"yarn run create:initial"} />
-  </TabItem>
-  <TabItem label="npm" icon="seti:npm">
-    <Code lang="sh" code={"npm run create:initial"} />
-  </TabItem>
-</Tabs>
-
-This command will run the `create:initial` script that will create the initial Sanity documents and singletons.
-
-### Launch your app
-
-To launch your app, run the following command in your terminal:
-
-<Tabs>
-  <TabItem label="pnpm" icon="pnpm">
-    <Code lang="sh" code={"pnpm run dev"} />
-  </TabItem>
-  <TabItem label="yarn" icon="seti:yarn">
-    <Code lang="sh" code={"yarn run dev"} />
-  </TabItem>
-  <TabItem label="npm" icon="seti:npm">
-    <Code lang="sh" code={"npm run dev"} />
-  </TabItem>
-</Tabs>
-
-This command will start the Hydrogen app in development mode.
 
 ## Troubleshooting
 
